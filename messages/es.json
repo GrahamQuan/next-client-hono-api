@@ -1,0 +1,27 @@
+{
+	"components": {
+		"sign-in-dialog": {
+			"login": "Iniciar sesión",
+			"register": "Registrarse",
+			"or": "O",
+			"sign-up": "¿No tienes una cuenta? Regístrate",
+			"back-to-sign-in": "¿Ya tienes una cuenta? Inicia sesión",
+			"name": "Nombre",
+			"email": "Correo electrónico",
+			"password": "Contraseña",
+			"sign-in-with-email": "Iniciar sesión con correo electrónico",
+			"social-sign-in": "Iniciar sesión con redes sociales",
+			"continue-with-google": "Continuar con Google",
+			"verify-form": {
+				"title": "Verifica tu correo electrónico",
+				"submit": "Verificar"
+			}
+		}
+	},
+	"home": {
+		"title": "Inicio"
+	},
+	"about": {
+		"title": "Acerca de"
+	}
+}

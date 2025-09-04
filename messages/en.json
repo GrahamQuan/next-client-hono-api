@@ -1,0 +1,27 @@
+{
+	"components": {
+		"sign-in-dialog": {
+			"login": "Login",
+			"register": "Register",
+			"or": "Or",
+			"sign-up": "Don't have an account? Sign up",
+			"back-to-sign-in": "Already have an account? Sign in",
+			"name": "Name",
+			"email": "Email",
+			"password": "Password",
+			"sign-in-with-email": "Sign in with Email",
+			"social-sign-in": "Social Sign In",
+			"continue-with-google": "Continue with Google",
+			"verify-form": {
+				"title": "Verify your email",
+				"submit": "Verify"
+			}
+		}
+	},
+	"home": {
+		"title": "Home"
+	},
+	"about": {
+		"title": "About"
+	}
+}
