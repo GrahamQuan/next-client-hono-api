@@ -17,6 +17,7 @@ export const env = createEnv({
     NEXT_PUBLIC_WEBSITE_NAME: z.string(),
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string(),
     NEXT_PUBLIC_API_URL: z.string().url(),
+    NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID: z.string(),
   },
 
   /**
@@ -28,6 +29,8 @@ export const env = createEnv({
     NEXT_PUBLIC_WEBSITE_NAME: process.env.NEXT_PUBLIC_WEBSITE_NAME,
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID:
+      process.env.NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID,
   },
 
   /**

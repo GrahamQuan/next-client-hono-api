@@ -6,7 +6,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Toaster } from '@/components/ui/sonner';
-// import SessionProvider from '@/providers/session-provider';
+import LazyLoader from '@/components/client/lazy-loader';
 
 const LogInDialog = dynamic(() => import('@/components/auth/log-in-dialog'), {
   ssr: !!false,
@@ -37,12 +37,14 @@ export default async function RootLayout({ children, params }: Props) {
           id='cf-turnstile-script'
           src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
         ></script>
+        <script src='https://accounts.google.com/gsi/client' async></script>
       </head>
       <body className='dark'>
         <NextIntlClientProvider>
           <Toaster richColors position='top-center' />
           <LogInDialog />
           <Header />
+          <LazyLoader />
           <main className='mx-auto max-w-5xl'>{children}</main>
         </NextIntlClientProvider>
       </body>
