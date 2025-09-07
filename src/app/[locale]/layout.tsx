@@ -6,7 +6,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Toaster } from '@/components/ui/sonner';
-import LazyLoader from '@/components/client/lazy-loader';
+import DynamicImport from '@/components/client/dynamic-import';
 
 const LogInDialog = dynamic(() => import('@/components/auth/log-in-dialog'), {
   ssr: !!false,
@@ -44,7 +44,7 @@ export default async function RootLayout({ children, params }: Props) {
           <Toaster richColors position='top-center' />
           <LogInDialog />
           <Header />
-          <LazyLoader />
+          <DynamicImport />
           <main className='mx-auto max-w-5xl'>{children}</main>
         </NextIntlClientProvider>
       </body>

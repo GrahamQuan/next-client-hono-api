@@ -7,7 +7,7 @@ const OneTap = dynamic(() => import('@/components/auth/one-tap'), {
   ssr: !!false,
 });
 
-export default function LazyLoader() {
+export default function DynamicImport() {
   const hydrated = useHydrated();
 
   if (!hydrated) {
