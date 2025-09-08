@@ -10,29 +10,29 @@ export default function OneTap() {
 
   const { data: session, refetch: refetchSession } = authClient.useSession();
 
-  const handleOneTap = async () => {
-    if (session) return;
-
-    try {
-      await authClient.oneTap({
-        fetchOptions: {
-          onSuccess: () => {
-            refetchSession();
-            router.push(pathname);
-          },
-          onError: () => {
-            router.push(pathname);
-          },
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const handleOneTap = async () => {
+      if (session) return;
+
+      try {
+        await authClient.oneTap({
+          fetchOptions: {
+            onSuccess: () => {
+              refetchSession();
+              router.push(pathname);
+            },
+            onError: () => {
+              router.push(pathname);
+            },
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     handleOneTap();
-  }, []);
+  }, [session]);
 
   return null;
 }

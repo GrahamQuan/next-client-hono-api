@@ -11,9 +11,10 @@ export default function Page({
   searchParams: Promise<{
     provider: SocialProviders;
     status?: 'login' | 'signup' | 'success' | 'error';
+    theme?: 'light' | 'dark';
   }>;
 }) {
-  const { provider, status } = use(searchParams);
+  const { provider, status, theme = 'dark' } = use(searchParams);
 
   const handleSignIn = async () => {
     // this will redirect to google login page after fetching successfully
@@ -56,7 +57,10 @@ export default function Page({
   }, [status]);
 
   return (
-    <div className='absolute inset-0 w-dvw h-dvh bg-white'>
+    <div
+      data-theme={theme}
+      className='absolute inset-0 w-dvw h-dvh bg-white dark:bg-black data-[theme=light]:bg-white data-[theme=dark]:bg-black'
+    >
       <div className='-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-full items-center justify-center'>
         <Loader />
       </div>
