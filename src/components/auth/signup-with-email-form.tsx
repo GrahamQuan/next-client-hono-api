@@ -9,9 +9,9 @@ import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { authClient } from '@/lib/auth-client';
+import { emailOtp } from '@/lib/auth-client';
 
-export default function SignupForm() {
+export default function SignupWithEmailForm() {
   const t = useTranslations('components.sign-in-dialog');
   const setStep = useSignInDialog((state) => state.setStep);
   const setEmail = useSignInDialog((state) => state.setEmail);
@@ -30,16 +30,13 @@ export default function SignupForm() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const name = formData.get('name') as string;
 
-    const { error } = await authClient.signUp.email({
-      name,
+    const { error } = await emailOtp.sendVerificationOtp({
       email,
-      password,
+      type: 'sign-in',
       fetchOptions: {
         headers: {
-          'x-captcha-response': turnstileToken,
+          'x-turnstile-token': turnstileToken,
         },
       },
     });
@@ -51,7 +48,7 @@ export default function SignupForm() {
     }
 
     setEmail(email);
-    setStep('verify');
+    setStep('verify-digit-code');
   };
 
   const handleGoogleSignIn = () => {
@@ -64,7 +61,7 @@ export default function SignupForm() {
   return (
     <div>
       <form onSubmit={handleEmailSignIn} className='space-y-4'>
-        <div className='space-y-2'>
+        {/* <div className='space-y-2'>
           <Label htmlFor='name'>{t('name')}</Label>
           <Input
             id='name'
@@ -73,7 +70,7 @@ export default function SignupForm() {
             placeholder='Enter your name'
             required
           />
-        </div>
+        </div> */}
         <div className='space-y-2'>
           <Label htmlFor='email'>{t('email')}</Label>
           <Input
@@ -84,7 +81,7 @@ export default function SignupForm() {
             required
           />
         </div>
-        <div className='space-y-2'>
+        {/* <div className='space-y-2'>
           <Label htmlFor='password'>{t('password')}</Label>
           <Input
             id='password'
@@ -93,7 +90,7 @@ export default function SignupForm() {
             placeholder='Enter your password'
             required
           />
-        </div>
+        </div> */}
         <div>
           {turnstileError && (
             <div className='mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700'>

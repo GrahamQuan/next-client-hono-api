@@ -11,14 +11,14 @@ import useSignInDialog from '@/store/auth/use-signin-dialog';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import LogInForm from './log-in-form';
-import SignupForm from './signup-form';
-import VerifyForm from './verify-form';
+import SignupWithEmailForm from './signup-with-email-form';
+import VerifyDigitCodeForm from './verify-digit-code-form';
 import { toast } from 'sonner';
-import { authClient } from '@/lib/auth-client';
+import { useSession } from '@/lib/auth-client';
 
 export default function LogInDialog() {
   const t = useTranslations('components.sign-in-dialog');
-  const { refetch: refetchSession } = authClient.useSession();
+  const { refetch: refetchSession } = useSession();
 
   const open = useSignInDialog((state) => state.open);
   const setOpen = useSignInDialog((state) => state.setOpen);
@@ -67,19 +67,19 @@ export default function LogInDialog() {
           <DialogTitle className='flex items-center gap-2'>
             <span className='text-muted-foreground'>
               {step === 'login' && t('login')}
-              {step === 'signup' && t('register')}
-              {step === 'verify' && t('verify-form.title')}
+              {step === 'signup-with-email' && t('register')}
+              {step === 'verify-digit-code' && t('verify-form.title')}
             </span>
             {step === 'login' && (
               <Button
                 variant='link'
-                onClick={() => setStep('signup')}
+                onClick={() => setStep('signup-with-email')}
                 className='px-0 hover:cursor-pointer'
               >
                 {`(${t('sign-up')})`}
               </Button>
             )}
-            {step === 'signup' && (
+            {step === 'signup-with-email' && (
               <Button
                 variant='link'
                 onClick={() => setStep('login')}
@@ -91,8 +91,8 @@ export default function LogInDialog() {
           </DialogTitle>
         </DialogHeader>
         {step === 'login' && <LogInForm />}
-        {step === 'signup' && <SignupForm />}
-        {step === 'verify' && <VerifyForm />}
+        {step === 'signup-with-email' && <SignupWithEmailForm />}
+        {step === 'verify-digit-code' && <VerifyDigitCodeForm />}
       </DialogContent>
     </Dialog>
   );

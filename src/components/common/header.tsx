@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 
-import { authClient } from '@/lib/auth-client';
+import { useSession } from '@/lib/auth-client';
 
 import SignOut from '../auth/sign-out';
 import LoginInBtn from '../auth/login-in-btn';
@@ -22,7 +22,7 @@ export default function Header() {
     // isPending, //loading state
     // error, //error object
     // refetch, //refetch the session
-  } = authClient.useSession();
+  } = useSession();
 
   return (
     <header className='sticky top-0 flex h-16 w-full border-b px-5 backdrop-blur-xl'>
@@ -39,13 +39,16 @@ export default function Header() {
           {session ? (
             <div className='flex items-center gap-2'>
               <Avatar>
-                <AvatarImage src={session?.user?.image ?? ''} />
-                <AvatarFallback>{session?.user?.name}</AvatarFallback>
+                <AvatarImage src={session?.user?.image || undefined} />
+                <AvatarFallback className='uppercase text-sm'>
+                  {session?.user?.name?.slice(0, 2) ||
+                    session?.user?.email?.slice(0, 2)}
+                </AvatarFallback>
               </Avatar>
               <SignOut />
             </div>
           ) : (
-            <LoginInBtn provider='google' />
+            <LoginInBtn />
           )}
         </div>
       </nav>

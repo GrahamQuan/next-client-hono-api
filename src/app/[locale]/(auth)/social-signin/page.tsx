@@ -2,7 +2,7 @@
 
 import Loader from '@/components/common/loader';
 import { env } from '@/env';
-import { authClient, SocialProviders } from '@/lib/auth-client';
+import { SocialProviders, signIn } from '@/lib/auth-client';
 import { use, useEffect } from 'react';
 
 export default function Page({
@@ -18,7 +18,7 @@ export default function Page({
 
   const handleSignIn = async () => {
     // this will redirect to google login page after fetching successfully
-    await authClient.signIn.social({
+    await signIn.social({
       provider,
       callbackURL: `${env.NEXT_PUBLIC_WEBSITE_URL}/social-signin?provider=${provider}&status=success`,
       errorCallbackURL: `${env.NEXT_PUBLIC_WEBSITE_URL}/social-signin?provider=${provider}&status=error`,

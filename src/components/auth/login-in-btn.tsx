@@ -1,9 +1,8 @@
 'use client';
 
-import type { SocialProviders } from '@/lib/auth-client';
 import useSignInDialog from '@/store/auth/use-signin-dialog';
 
-export default function SignInBtn({ provider }: { provider: SocialProviders }) {
+export default function SignInBtn() {
   const setOpen = useSignInDialog((state) => state.setOpen);
 
   return (

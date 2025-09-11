@@ -1,42 +1,36 @@
 'use client';
 
-import useSignInDialog from '@/store/auth/use-signin-dialog';
 import { useTranslations } from 'next-intl';
+import { Dot } from 'lucide-react';
+
+import useSignInDialog from '@/store/auth/use-signin-dialog';
+
 import { Label } from '../ui/label';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Button } from '../ui/button';
-import { tryCatch } from '@/lib/promise-utils';
-import { Dot } from 'lucide-react';
-import { env } from '@/env';
 
-export default function VerifyForm() {
+import { signIn } from '@/lib/auth-client';
+export default function VerifyDigitCodeForm() {
   const t = useTranslations('components.sign-in-dialog');
   const setStep = useSignInDialog((state) => state.setStep);
-  const setOpen = useSignInDialog((state) => state.setOpen);
   const email = useSignInDialog((state) => state.email);
-  const setEmail = useSignInDialog((state) => state.setEmail);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const code = formData.get('code') as string;
-    const [err, res] = await tryCatch(
-      fetch(`${env.NEXT_PUBLIC_API_URL}/api/verify`, {
-        method: 'POST',
-        body: JSON.stringify({ code, email }),
-      })
-    );
 
-    if (err) {
-      console.error('Verify error:', err);
+    const { error } = await signIn.emailOtp({
+      email,
+      otp: code,
+    });
+
+    if (error) {
+      console.error('Verify error:', error);
       return;
     }
 
-    const data = await res.json();
-    console.log('Verify:', data);
-    setOpen(false);
-    setStep('login');
-    setEmail('');
+    setStep('setup-user-info');
   };
 
   return (
@@ -59,7 +53,7 @@ export default function VerifyForm() {
           </InputOTPGroup>
         </InputOTP>
       </div>
-      <Button type='submit' className='w-full'>
+      <Button type='submit' className='w-full hover:cursor-pointer'>
         {t('verify-form.submit')}
       </Button>
     </form>

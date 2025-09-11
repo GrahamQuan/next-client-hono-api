@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { authClient } from '@/lib/auth-client';
+import { signOut } from '@/lib/auth-client';
 import { useState } from 'react';
 
 export default function SignOut() {
@@ -10,7 +10,7 @@ export default function SignOut() {
   const handleSignOut = async () => {
     try {
       setIsLoading(true);
-      await authClient.signOut();
+      await signOut();
     } catch (error) {
       console.error(error);
     } finally {

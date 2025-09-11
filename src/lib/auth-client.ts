@@ -1,10 +1,23 @@
 import { env } from '@/env';
 import { createAuthClient } from 'better-auth/react';
-import { oneTapClient } from 'better-auth/client/plugins';
+import {
+  emailOTPClient,
+  oneTapClient,
+  usernameClient,
+} from 'better-auth/client/plugins';
 
 export type SocialProviders = 'google';
 
-export const authClient = createAuthClient({
+export const {
+  signIn,
+  signOut,
+  signUp,
+  useSession,
+  oneTap,
+  $Infer,
+  emailOtp,
+  updateUser,
+} = createAuthClient({
   baseURL: env.NEXT_PUBLIC_API_URL,
   plugins: [
     oneTapClient({
@@ -22,7 +35,9 @@ export const authClient = createAuthClient({
         maxAttempts: 5, // Maximum number of attempts before triggering onPromptNotification (default: 5)
       },
     }),
+    emailOTPClient(),
+    usernameClient(),
   ],
 });
 
-export type Session = typeof authClient.$Infer.Session.user;
+export type Session = typeof $Infer.Session.user;
