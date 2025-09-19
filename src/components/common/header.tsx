@@ -10,7 +10,7 @@ import LoginInBtn from '../auth/login-in-btn';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import LocaleSwitcher from './locale-switch';
 
-const links: { href: Route; label: string }[] = [
+const links: { href: string; label: string }[] = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/protected', label: 'Protected' },
@@ -25,7 +25,7 @@ export default function Header() {
         <ul className='flex items-center gap-4'>
           {links.map((link) => (
             <li key={link.href}>
-              <Link href={link.href}>{link.label}</Link>
+              <Link href={link.href as Route}>{link.label}</Link>
             </li>
           ))}
         </ul>
