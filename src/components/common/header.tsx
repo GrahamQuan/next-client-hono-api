@@ -17,12 +17,7 @@ const links: { href: Route; label: string }[] = [
 ];
 
 export default function Header() {
-  const {
-    data: session,
-    // isPending, //loading state
-    // error, //error object
-    // refetch, //refetch the session
-  } = useSession();
+  const { data: session } = useSession();
 
   return (
     <header className='sticky top-0 flex h-16 w-full border-b px-5 backdrop-blur-xl'>

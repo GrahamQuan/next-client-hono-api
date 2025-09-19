@@ -9,28 +9,35 @@ import { Label } from '../ui/label';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Button } from '../ui/button';
 
-import { signIn } from '@/lib/auth-client';
-export default function VerifyDigitCodeForm() {
+import { emailOtp, useSession } from '@/lib/auth-client';
+import { toast } from 'sonner';
+
+export default function VerifySignupDigitCodeForm() {
   const t = useTranslations('components.sign-in-dialog');
-  const setStep = useSignInDialog((state) => state.setStep);
+  const { refetch: refetchSession } = useSession();
   const email = useSignInDialog((state) => state.email);
+  const resetAllAndClose = useSignInDialog((state) => state.resetAllAndClose);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const code = formData.get('code') as string;
 
-    const { error } = await signIn.emailOtp({
+    const { error } = await emailOtp.verifyEmail({
       email,
       otp: code,
     });
 
     if (error) {
-      console.error('Verify error:', error);
+      toast.error('Verify error:', {
+        description: error.statusText,
+      });
       return;
     }
 
-    setStep('setup-user-info');
+    toast.success('Verify success');
+    refetchSession();
+    resetAllAndClose();
   };
 
   return (

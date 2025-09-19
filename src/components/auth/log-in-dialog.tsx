@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import LogInForm from './log-in-form';
 import SignupWithEmailForm from './signup-with-email-form';
-import VerifyDigitCodeForm from './verify-digit-code-form';
+import VerifySignupDigitCodeForm from './verify-signup-digit-code-form';
 import { toast } from 'sonner';
 import { useSession } from '@/lib/auth-client';
 
@@ -68,7 +68,7 @@ export default function LogInDialog() {
             <span className='text-muted-foreground'>
               {step === 'login' && t('login')}
               {step === 'signup-with-email' && t('register')}
-              {step === 'verify-digit-code' && t('verify-form.title')}
+              {step === 'verify-signup-digit-code' && t('verify-form.title')}
             </span>
             {step === 'login' && (
               <Button
@@ -92,7 +92,7 @@ export default function LogInDialog() {
         </DialogHeader>
         {step === 'login' && <LogInForm />}
         {step === 'signup-with-email' && <SignupWithEmailForm />}
-        {step === 'verify-digit-code' && <VerifyDigitCodeForm />}
+        {step === 'verify-signup-digit-code' && <VerifySignupDigitCodeForm />}
       </DialogContent>
     </Dialog>
   );

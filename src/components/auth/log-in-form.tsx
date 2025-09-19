@@ -1,10 +1,9 @@
 'use client';
 
 import { openSocialPopup } from '@/app/[locale]/(auth)/social-signin/open-social-popup';
-import { useRouter } from '@/i18n/navigation';
 import useSignInDialog from '@/store/auth/use-signin-dialog';
 import { Label } from '@radix-ui/react-label';
-import { signIn } from '@/lib/auth-client';
+import { signIn, useSession } from '@/lib/auth-client';
 import { useTranslations } from 'next-intl';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
@@ -13,9 +12,9 @@ import { Input } from '../ui/input';
 
 export default function LogInForm() {
   const t = useTranslations('components.sign-in-dialog');
-  const router = useRouter();
+  const { refetch: refetchSession } = useSession();
 
-  const setOpen = useSignInDialog((state) => state.setOpen);
+  const resetAllAndClose = useSignInDialog((state) => state.resetAllAndClose);
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +25,7 @@ export default function LogInForm() {
     const { error } = await signIn.email({
       email,
       password,
+      rememberMe: true,
       // callbackURL: '/'
     });
 
@@ -36,8 +36,8 @@ export default function LogInForm() {
 
     toast.success('Logged in');
 
-    router.refresh();
-    setOpen(false);
+    refetchSession();
+    resetAllAndClose();
   };
 
   const handleGoogleSignIn = () => {
@@ -71,9 +71,8 @@ export default function LogInForm() {
           />
         </div>
         <Button
-          type='button'
+          type='submit'
           className='w-full hover:enabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-60'
-          onClick={handleEmailSignIn}
         >
           {t('sign-in-with-email')}
         </Button>

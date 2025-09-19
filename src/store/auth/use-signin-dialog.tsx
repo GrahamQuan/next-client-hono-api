@@ -1,27 +1,30 @@
 import { create } from 'zustand';
 
-type SignInDialogState = {
+type State = {
   open: boolean;
   step:
     | 'login'
     | 'signup-with-email'
-    | 'verify-digit-code'
-    | 'setup-user-info'
+    | 'verify-signup-digit-code'
     | 'forgot-password';
   email: string;
-  setOpen: (open: boolean) => void;
-  setStep: (step: SignInDialogState['step']) => void;
-  setEmail: (email: string) => void;
 };
 
-const useSignInDialog = create<SignInDialogState>((set) => ({
+type Actions = {
+  setOpen: (open: boolean) => void;
+  setStep: (step: State['step']) => void;
+  setEmail: (email: string) => void;
+  resetAllAndClose: () => void;
+};
+
+const useSignInDialog = create<State & Actions>((set) => ({
   open: false,
   step: 'login',
   email: '',
   setOpen: (open) => set({ open }),
   setStep: (step) => set({ step }),
   setEmail: (email) => set({ email }),
-  resetAll: () => set({ open: false, step: 'login', email: '' }),
+  resetAllAndClose: () => set({ open: false, step: 'login', email: '' }),
 }));
 
 export default useSignInDialog;
