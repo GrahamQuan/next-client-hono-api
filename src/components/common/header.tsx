@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import type { Route } from 'next';
+import Link from 'next/link';
 
 import { useSession } from '@/lib/auth-client';
 
-import SignOut from '../auth/sign-out';
 import LoginInBtn from '../auth/login-in-btn';
+import SignOut from '../auth/sign-out';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import LocaleSwitcher from './locale-switch';
 
@@ -35,7 +35,7 @@ export default function Header() {
             <div className='flex items-center gap-2'>
               <Avatar>
                 <AvatarImage src={session?.user?.image || undefined} />
-                <AvatarFallback className='uppercase text-sm'>
+                <AvatarFallback className='text-sm uppercase'>
                   {session?.user?.name?.slice(0, 2) ||
                     session?.user?.email?.slice(0, 2)}
                 </AvatarFallback>
