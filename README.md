@@ -1,4 +1,4 @@
-# Next.js 15 App
+# Next.js 16 App
 
 ## Tech Stack
 
@@ -12,6 +12,7 @@
 - Drizzle ORM
 - PostgreSQL (Serverless DB)
 - Biome (Linting and formatting)
+- hono as api
 
 ## Getting Started
 
