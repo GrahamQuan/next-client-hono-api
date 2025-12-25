@@ -1,12 +1,12 @@
 'use client';
 
-import { openSocialPopup } from '@/app/[locale]/(auth)/social-signin/open-social-popup';
-import useSignInDialog from '@/store/auth/use-signin-dialog';
 import { Label } from '@radix-ui/react-label';
-import { signIn, useSession } from '@/lib/auth-client';
 import { useTranslations } from 'next-intl';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
+import { openSocialPopup } from '@/app/[locale]/(auth)/social-signin/open-social-popup';
+import { signIn, useSession } from '@/lib/auth-client';
+import useSignInDialog from '@/store/auth/use-signin-dialog';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -52,23 +52,11 @@ export default function LogInForm() {
       <form onSubmit={handleEmailSignIn} className='space-y-4'>
         <div className='space-y-2'>
           <Label htmlFor='email'>{t('email')}</Label>
-          <Input
-            id='email'
-            type='email'
-            name='email'
-            placeholder='Enter your email'
-            required
-          />
+          <Input id='email' type='email' name='email' placeholder='Enter your email' required />
         </div>
         <div className='space-y-2'>
           <Label htmlFor='password'>{t('password')}</Label>
-          <Input
-            id='password'
-            type='password'
-            name='password'
-            placeholder='Enter your password'
-            required
-          />
+          <Input id='password' type='password' name='password' placeholder='Enter your password' required />
         </div>
         <Button
           type='submit'
@@ -82,17 +70,10 @@ export default function LogInForm() {
           <span className='w-full border-t' />
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-background px-2 text-muted-foreground'>
-            {t('social-sign-in')}
-          </span>
+          <span className='bg-background px-2 text-muted-foreground'>{t('social-sign-in')}</span>
         </div>
       </div>
-      <Button
-        variant='outline'
-        type='button'
-        className='w-full hover:cursor-pointer'
-        onClick={handleGoogleSignIn}
-      >
+      <Button variant='outline' type='button' className='w-full hover:cursor-pointer' onClick={handleGoogleSignIn}>
         <FcGoogle className='mr-2 h-4 w-4' />
         {t('continue-with-google')}
       </Button>

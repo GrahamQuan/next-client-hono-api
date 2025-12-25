@@ -1,13 +1,41 @@
 {
-	"editor.codeActionsOnSave": {
-		"quickfix.biome": "explicit",
-		"source.organizeImports.biome": "explicit"
-	},
-	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "biomejs.biome",
-	"tailwindCSS.experimental.classRegex": [
-		["clsx\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-		["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]?([^\"'`]+)[\"'`]?"],
-		["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-	]
+  "i18n-ally.localesPaths": ["messages"],
+
+  // Set Biome as the default formatter
+  "editor.defaultFormatter": "biomejs.biome",
+
+  // Enable format on save
+  "editor.formatOnSave": true,
+
+  // Enable code actions on save (for Biome fixes)
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+
+  // Disable ESLint
+  "eslint.enable": false,
+
+  // Disable Prettier
+  "prettier.enable": false,
+
+  // Use Biome for specific file types
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }

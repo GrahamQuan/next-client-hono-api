@@ -1,8 +1,8 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { signOut } from '@/lib/auth-client';
 import { useState } from 'react';
+import { signOut } from '@/lib/auth-client';
 
 export default function SignOut() {
   const [isLoading, setIsLoading] = useState(false);

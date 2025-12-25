@@ -1,23 +1,10 @@
-import { env } from '@/env';
+import { emailOTPClient, oneTapClient, usernameClient } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
-import {
-  emailOTPClient,
-  oneTapClient,
-  usernameClient,
-} from 'better-auth/client/plugins';
+import { env } from '@/env';
 
 export type SocialProviders = 'google';
 
-export const {
-  signIn,
-  signOut,
-  signUp,
-  useSession,
-  oneTap,
-  $Infer,
-  emailOtp,
-  updateUser,
-} = createAuthClient({
+export const { signIn, signOut, signUp, useSession, oneTap, $Infer, emailOtp, updateUser } = createAuthClient({
   baseURL: env.NEXT_PUBLIC_API_URL,
   plugins: [
     oneTapClient({

@@ -1,0 +1,14 @@
+/**
+ * current runtime is next.js
+ * PS: your env.PORT should match next.js
+ */
+
+import App from './app';
+import { handle } from 'hono/vercel';
+
+export const GET = handle(App);
+export const POST = handle(App);
+export const PUT = handle(App);
+export const PATCH = handle(App);
+export const OPTIONS = handle(App);
+export const DELETE = handle(App);

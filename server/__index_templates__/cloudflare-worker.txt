@@ -1,0 +1,8 @@
+/**
+ * current runtime is cloudflare worker
+ * PS: make sure enbale `"compatibility_flags": ["nodejs_compat"]` on wrangler
+ */
+
+import App from './app';
+
+export default App;

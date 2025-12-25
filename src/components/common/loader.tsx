@@ -4,10 +4,7 @@ export default function Loader({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden='true'
-      className={cn(
-        'h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600',
-        className
-      )}
+      className={cn('h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600', className)}
       viewBox='0 0 100 101'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

@@ -1,20 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import useSignInDialog from '@/store/auth/use-signin-dialog';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useSession } from '@/lib/auth-client';
+import useSignInDialog from '@/store/auth/use-signin-dialog';
 import LogInForm from './log-in-form';
 import SignupWithEmailForm from './signup-with-email-form';
 import VerifySignupDigitCodeForm from './verify-signup-digit-code-form';
-import { toast } from 'sonner';
-import { useSession } from '@/lib/auth-client';
 
 export default function LogInDialog() {
   const t = useTranslations('components.sign-in-dialog');
@@ -71,20 +66,12 @@ export default function LogInDialog() {
               {step === 'verify-signup-digit-code' && t('verify-form.title')}
             </span>
             {step === 'login' && (
-              <Button
-                variant='link'
-                onClick={() => setStep('signup-with-email')}
-                className='px-0 hover:cursor-pointer'
-              >
+              <Button variant='link' onClick={() => setStep('signup-with-email')} className='px-0 hover:cursor-pointer'>
                 {`(${t('sign-up')})`}
               </Button>
             )}
             {step === 'signup-with-email' && (
-              <Button
-                variant='link'
-                onClick={() => setStep('login')}
-                className='px-0 hover:cursor-pointer'
-              >
+              <Button variant='link' onClick={() => setStep('login')} className='px-0 hover:cursor-pointer'>
                 {`(${t('back-to-sign-in')})`}
               </Button>
             )}

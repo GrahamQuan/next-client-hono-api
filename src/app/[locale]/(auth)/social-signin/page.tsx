@@ -1,9 +1,9 @@
 'use client';
 
+import { use, useEffect } from 'react';
 import Loader from '@/components/common/loader';
 import { env } from '@/env';
 import { SocialProviders, signIn } from '@/lib/auth-client';
-import { use, useEffect } from 'react';
 
 export default function Page({
   searchParams,
@@ -34,20 +34,14 @@ export default function Page({
       case 'success':
         // Send a message to the parent window to close the sign-in dialog
         if (window.opener) {
-          window.opener.postMessage(
-            { type: 'SIGNIN_SUCCESS', open: false },
-            window.location.origin
-          );
+          window.opener.postMessage({ type: 'SIGNIN_SUCCESS', open: false }, window.location.origin);
         }
         window.close();
         break;
       case 'error':
         // Send a message to the parent window to close the sign-in dialog
         if (window.opener) {
-          window.opener.postMessage(
-            { type: 'SIGNIN_ERROR', open: true },
-            window.location.origin
-          );
+          window.opener.postMessage({ type: 'SIGNIN_ERROR', open: true }, window.location.origin);
         }
         window.close();
         break;

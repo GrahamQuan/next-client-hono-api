@@ -1,0 +1,11 @@
+/**
+ * current runtime is bun
+ */
+
+import env from '~/lib/env';
+import App from './app';
+
+export default { 
+  fetch: App.fetch,
+  port: env.PORT,
+};

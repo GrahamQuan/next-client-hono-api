@@ -1,9 +1,9 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { env } from '@/env';
 import type {
   TurnstileRenderOptions,
   // TurnstileResponse,
 } from '@/types/turnstile';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useTurnstile({
   siteKey = env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string,
@@ -44,8 +44,7 @@ export function useTurnstile({
     if (!document.querySelector('script#cf-turnstile-script')) {
       const script = document.createElement('script');
       script.id = 'cf-turnstile-script';
-      script.src =
-        'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
       script.async = true;
       script.defer = true;
 
@@ -75,7 +74,7 @@ export function useTurnstile({
       setError(null);
       onVerify?.(responseToken);
     },
-    [onVerify]
+    [onVerify],
   );
 
   // handle expired callback
@@ -95,7 +94,7 @@ export function useTurnstile({
       setIsVerifying(false);
       onError?.(err);
     },
-    [onError]
+    [onError],
   );
 
   // render Turnstile
@@ -133,33 +132,23 @@ export function useTurnstile({
         window.turnstile.remove(id);
       }
     };
-  }, [
-    isLoaded,
-    siteKey,
-    theme,
-    size,
-    appearance,
-    refreshExpired,
-    action,
-    handleVerify,
-    handleExpire,
-    handleError,
-  ]);
+  }, [isLoaded, siteKey, theme, size, appearance, refreshExpired, action, handleVerify, handleExpire, handleError]);
 
   // auto token refresh logic
   useEffect(() => {
     if (!token) return;
 
     // set refresh time (convert to milliseconds)
-    const refreshTimeout = setTimeout(() => {
-      if (widgetId && window.turnstile) {
-        window.turnstile.reset(widgetId);
-        setToken('');
-        setError(
-          'Verification token has been refreshed due to approaching expiration'
-        );
-      }
-    }, autoRefreshMinutes * 60 * 1000);
+    const refreshTimeout = setTimeout(
+      () => {
+        if (widgetId && window.turnstile) {
+          window.turnstile.reset(widgetId);
+          setToken('');
+          setError('Verification token has been refreshed due to approaching expiration');
+        }
+      },
+      autoRefreshMinutes * 60 * 1000,
+    );
 
     return () => clearTimeout(refreshTimeout);
   }, [token, widgetId, autoRefreshMinutes]);
@@ -216,18 +205,12 @@ export function useTurnstile({
 
   // handle API response timeout-or-duplicate error
   const handleApiResponse = useCallback(
-    (response: {
-      error?: string;
-      requiresRefresh?: boolean;
-      details?: string[];
-    }) => {
+    (response: { error?: string; requiresRefresh?: boolean; details?: string[] }) => {
       // check for Turnstile related errors
       if (
         response.error?.includes('CAPTCHA') ||
         response.requiresRefresh ||
-        (response.details &&
-          Array.isArray(response.details) &&
-          response.details.includes('timeout-or-duplicate'))
+        (response.details && Array.isArray(response.details) && response.details.includes('timeout-or-duplicate'))
       ) {
         // reset token and component
         reset();
@@ -239,7 +222,7 @@ export function useTurnstile({
       // if there are no Turnstile related errors, return the original error
       return response.error || 'An error occurred';
     },
-    [reset]
+    [reset],
   );
 
   return {

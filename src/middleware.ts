@@ -1,21 +1,19 @@
 // import { auth as middleware } from '@/auth';
-import createNextIntlMiddleware from 'next-intl/middleware';
-import { routing } from '@/i18n/routing';
+
 import { betterFetch } from '@better-fetch/fetch';
 import { NextRequest, NextResponse } from 'next/server';
-import { Session } from './lib/auth-client';
+import createNextIntlMiddleware from 'next-intl/middleware';
+import { routing } from '@/i18n/routing';
 import { env } from './env';
+import { Session } from './lib/auth-client';
 
 async function getAuthSessionCookie(req: NextRequest) {
-  const { data: session } = await betterFetch<Session>(
-    `${env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
-    {
-      baseURL: req.nextUrl.origin,
-      headers: {
-        cookie: req.headers.get('cookie') || '', // Forward the cookies from the request
-      },
-    }
-  );
+  const { data: session } = await betterFetch<Session>(`${env.NEXT_PUBLIC_API_URL}/api/auth/get-session`, {
+    baseURL: req.nextUrl.origin,
+    headers: {
+      cookie: req.headers.get('cookie') || '', // Forward the cookies from the request
+    },
+  });
 
   return session;
 }

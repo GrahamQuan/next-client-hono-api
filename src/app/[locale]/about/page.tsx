@@ -1,8 +1,9 @@
 // import { Link } from '@/i18n/navigation';
-import { getTranslations } from 'next-intl/server';
-import { locale } from 'next/root-params';
+
 // import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { locale } from 'next/root-params';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Page() {
   const t = await getTranslations('about');

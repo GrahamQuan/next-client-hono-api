@@ -36,8 +36,7 @@ export default function Header() {
               <Avatar>
                 <AvatarImage src={session?.user?.image || undefined} />
                 <AvatarFallback className='text-sm uppercase'>
-                  {session?.user?.name?.slice(0, 2) ||
-                    session?.user?.email?.slice(0, 2)}
+                  {session?.user?.name?.slice(0, 2) || session?.user?.email?.slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
               <SignOut />

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Header from '@/components/common/header';
 import dynamic from 'next/dynamic';
-import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
-import { Toaster } from '@/components/ui/sonner';
-import DynamicImport from '@/components/client/dynamic-import';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
+import DynamicImport from '@/components/client/dynamic-import';
+import Header from '@/components/common/header';
+import { Toaster } from '@/components/ui/sonner';
+import { routing } from '@/i18n/routing';
 
 const LogInDialog = dynamic(() => import('@/components/auth/log-in-dialog'), {
   ssr: !!false,
@@ -24,10 +24,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function RootLayout({
-  children,
-  params,
-}: LayoutProps<'/[locale]'>) {
+export default async function RootLayout({ children, params }: LayoutProps<'/[locale]'>) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {

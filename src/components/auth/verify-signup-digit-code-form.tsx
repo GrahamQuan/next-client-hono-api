@@ -1,16 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Dot } from 'lucide-react';
-
-import useSignInDialog from '@/store/auth/use-signin-dialog';
-
-import { Label } from '../ui/label';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
-import { Button } from '../ui/button';
-
-import { emailOtp, useSession } from '@/lib/auth-client';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { emailOtp, useSession } from '@/lib/auth-client';
+import useSignInDialog from '@/store/auth/use-signin-dialog';
+import { Button } from '../ui/button';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
+import { Label } from '../ui/label';
 
 export default function VerifySignupDigitCodeForm() {
   const t = useTranslations('components.sign-in-dialog');

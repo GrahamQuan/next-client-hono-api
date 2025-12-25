@@ -1,7 +1,7 @@
 'use client';
 
-import { useHydrated } from '@/hooks/use-hydrated';
 import dynamic from 'next/dynamic';
+import { useHydrated } from '@/hooks/use-hydrated';
 
 const OneTap = dynamic(() => import('@/components/auth/one-tap'), {
   ssr: !!false,

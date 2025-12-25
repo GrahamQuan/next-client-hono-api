@@ -2,11 +2,7 @@ import { create } from 'zustand';
 
 type State = {
   open: boolean;
-  step:
-    | 'login'
-    | 'signup-with-email'
-    | 'verify-signup-digit-code'
-    | 'forgot-password';
+  step: 'login' | 'signup-with-email' | 'verify-signup-digit-code' | 'forgot-password';
   email: string;
 };
 

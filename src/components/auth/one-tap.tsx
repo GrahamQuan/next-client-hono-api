@@ -1,8 +1,8 @@
 'use client';
 
-import { usePathname, useRouter } from '@/i18n/navigation';
-import { useSession, oneTap } from '@/lib/auth-client';
 import { useEffect } from 'react';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { oneTap, useSession } from '@/lib/auth-client';
 
 export default function OneTap() {
   const router = useRouter();
