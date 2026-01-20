@@ -12,7 +12,7 @@
 - Drizzle ORM
 - PostgreSQL (Serverless DB)
 - Biome (Linting and formatting)
-- hono as api
+- hono as api (via `src/app/api/[[...route]]/route.ts`)
 
 ## Getting Started
 

@@ -1,12 +1,14 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { emailOTP, oneTap } from 'better-auth/plugins';
+import { eq } from 'drizzle-orm';
 import { v7 as uuidv7 } from 'uuid';
 import { db } from '~/db';
 import * as schema from '~/db/schema';
 import { sendVerificationEmail } from '~/email';
 import { hashPassword, verifyPassword } from '~/generator/password';
 import env from '~/lib/env';
+import { issueTokenPair } from './token-service';
 import { verifyTurnstileToken } from './verify-turnstile-token';
 
 export const auth = betterAuth({
@@ -20,6 +22,44 @@ export const auth = betterAuth({
   advanced: {
     database: {
       generateId: () => uuidv7(),
+    },
+  },
+  // Session configuration for AT+RT
+  session: {
+    expiresIn: env.AUTH_REFRESH_TOKEN_EXPIRES_IN, // Session expires with RT (7 days)
+    updateAge: 60 * 60 * 24, // Update session age every 24 hours
+    cookieCache: {
+      enabled: true,
+      maxAge: env.AUTH_ACCESS_TOKEN_EXPIRES_IN, // Cache matches AT expiry
+    },
+  },
+  // Database hooks for AT+RT integration
+  databaseHooks: {
+    session: {
+      create: {
+        // After session is created, issue AT+RT tokens
+        after: async (session) => {
+          // Get the user for token payload
+          const userRecords = await db.select().from(schema.user).where(eq(schema.user.id, session.userId)).limit(1);
+
+          const userRecord = userRecords[0];
+          if (!userRecord) {
+            console.error('User not found for session:', session.id);
+            return;
+          }
+
+          // Issue token pair and store RT hash in session
+          await issueTokenPair(
+            {
+              id: userRecord.id,
+              email: userRecord.email,
+              name: userRecord.name,
+              emailVerified: userRecord.emailVerified,
+            },
+            session.id,
+          );
+        },
+      },
     },
   },
   emailAndPassword: {
@@ -42,7 +82,6 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    requireEmailVerification: true,
     autoSignInAfterVerification: true,
     sendOnSignUp: true,
   },

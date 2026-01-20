@@ -22,6 +22,9 @@ const EnvSchema = z.object({
   // auth
   AUTH_TOTP_SECRET: z.string(),
   AUTH_BETTER_AUTH_SECRET: z.string(),
+  AUTH_JWT_SECRET: z.string().min(32),
+  AUTH_ACCESS_TOKEN_EXPIRES_IN: z.coerce.number().default(600), // 10 minutes
+  AUTH_REFRESH_TOKEN_EXPIRES_IN: z.coerce.number().default(1296000), // 15 days
   AUTH_GOOGLE_CLIENT_ID: z.string(),
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
   AUTH_TURNSTILE_SECRET_KEY: z.string(),
