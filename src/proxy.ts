@@ -18,7 +18,7 @@ async function getAuthSessionCookie(req: NextRequest) {
   return session;
 }
 
-async function middleware(req: NextRequest) {
+async function proxy(req: NextRequest) {
   const response = createNextIntlMiddleware(routing)(req);
 
   if (req.nextUrl.pathname.startsWith('/protected')) {
@@ -32,7 +32,7 @@ async function middleware(req: NextRequest) {
   return response;
 }
 
-export default middleware;
+export default proxy;
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],

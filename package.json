@@ -88,9 +88,5 @@
   "packageManager": "pnpm@10.5.2",
   "pnpm": {
     "ignoredBuiltDependencies": ["@biomejs/biome", "sharp"]
-  },
-  "overrides": {
-    "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.3"
   }
 }
