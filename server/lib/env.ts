@@ -12,8 +12,8 @@ expand(
 const EnvSchema = z.object({
   // app
   NODE_ENV: z.enum(['development', 'production']),
-  PORT: z.coerce.number().default(8787),
-  API_URL: z.string(),
+  PORT: z.coerce.number().default(3000),
+  NEXT_PUBLIC_API_URL: z.string(),
   WEBSITE_URL: z.string(),
   // database
   DATABASE_URL: z.string(),
@@ -22,10 +22,7 @@ const EnvSchema = z.object({
   // auth
   AUTH_TOTP_SECRET: z.string(),
   AUTH_BETTER_AUTH_SECRET: z.string(),
-  AUTH_JWT_SECRET: z.string().min(32),
-  AUTH_ACCESS_TOKEN_EXPIRES_IN: z.coerce.number().default(600), // 10 minutes
-  AUTH_REFRESH_TOKEN_EXPIRES_IN: z.coerce.number().default(1296000), // 15 days
-  AUTH_GOOGLE_CLIENT_ID: z.string(),
+  NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID: z.string(),
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
   AUTH_TURNSTILE_SECRET_KEY: z.string(),
   // email

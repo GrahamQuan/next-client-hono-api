@@ -1,8 +1,7 @@
 'use client';
 
-import { use, useEffect } from 'react';
+import { use, useEffect, useEffectEvent } from 'react';
 import Loader from '@/components/common/loader';
-import { env } from '@/env';
 import { SocialProviders, signIn } from '@/lib/auth-client';
 
 export default function Page({
@@ -16,14 +15,29 @@ export default function Page({
 }) {
   const { provider, status, theme = 'dark' } = use(searchParams);
 
-  const handleSignIn = async () => {
-    // this will redirect to google login page after fetching successfully
-    await signIn.social({
-      provider,
-      callbackURL: `${env.NEXT_PUBLIC_WEBSITE_URL}/social-signin?provider=${provider}&status=success`,
-      errorCallbackURL: `${env.NEXT_PUBLIC_WEBSITE_URL}/social-signin?provider=${provider}&status=error`,
-    });
-  };
+  const handleSignIn = useEffectEvent(async () => {
+    try {
+      // this will redirect to google login page after fetching successfully
+      const result = await signIn.social({
+        provider,
+        callbackURL: `${window.location.origin}/social-signin?provider=${provider}&status=success`,
+        errorCallbackURL: `${window.location.origin}/social-signin?provider=${provider}&status=error`,
+      });
+
+      // If there's an error in the result, log it
+      if (result?.error) {
+        console.error('Social sign-in error:', result);
+        if (window.opener) {
+          window.opener.postMessage({ type: 'SIGNIN_ERROR', open: false }, window.location.origin);
+        }
+      }
+    } catch (error) {
+      console.error('Social sign-in failed:', error);
+      if (window.opener) {
+        window.opener.postMessage({ type: 'SIGNIN_ERROR', open: false }, window.location.origin);
+      }
+    }
+  });
 
   useEffect(() => {
     switch (status) {
@@ -41,7 +55,7 @@ export default function Page({
       case 'error':
         // Send a message to the parent window to close the sign-in dialog
         if (window.opener) {
-          window.opener.postMessage({ type: 'SIGNIN_ERROR', open: true }, window.location.origin);
+          window.opener.postMessage({ type: 'SIGNIN_ERROR', open: false }, window.location.origin);
         }
         window.close();
         break;

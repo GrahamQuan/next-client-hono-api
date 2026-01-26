@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
+import ClientComponent from '@/components/client/client-component';
 import DynamicImport from '@/components/client/dynamic-import';
 import Header from '@/components/common/header';
 import { Toaster } from '@/components/ui/sonner';
@@ -34,7 +35,7 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[lo
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script
           defer
@@ -49,6 +50,7 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[lo
           <LogInDialog />
           <Header />
           <DynamicImport />
+          <ClientComponent />
           <main className='mx-auto max-w-5xl'>{children}</main>
         </NextIntlClientProvider>
       </body>

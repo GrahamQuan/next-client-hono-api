@@ -1,18 +1,17 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { nextCookies } from 'better-auth/next-js';
 import { emailOTP, oneTap } from 'better-auth/plugins';
-import { eq } from 'drizzle-orm';
 import { v7 as uuidv7 } from 'uuid';
 import { db } from '~/db';
 import * as schema from '~/db/schema';
 import { sendVerificationEmail } from '~/email';
 import { hashPassword, verifyPassword } from '~/generator/password';
 import env from '~/lib/env';
-import { issueTokenPair } from './token-service';
 import { verifyTurnstileToken } from './verify-turnstile-token';
 
 export const auth = betterAuth({
-  baseURL: env.API_URL, // important
+  baseURL: env.NEXT_PUBLIC_API_URL, // important
   secret: env.AUTH_BETTER_AUTH_SECRET,
   trustedOrigins: [env.WEBSITE_URL, 'http://localhost:3000', 'http://localhost:3001'],
   database: drizzleAdapter(db, {
@@ -24,42 +23,12 @@ export const auth = betterAuth({
       generateId: () => uuidv7(),
     },
   },
-  // Session configuration for AT+RT
   session: {
-    expiresIn: env.AUTH_REFRESH_TOKEN_EXPIRES_IN, // Session expires with RT (7 days)
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // Update session age every 24 hours
     cookieCache: {
       enabled: true,
-      maxAge: env.AUTH_ACCESS_TOKEN_EXPIRES_IN, // Cache matches AT expiry
-    },
-  },
-  // Database hooks for AT+RT integration
-  databaseHooks: {
-    session: {
-      create: {
-        // After session is created, issue AT+RT tokens
-        after: async (session) => {
-          // Get the user for token payload
-          const userRecords = await db.select().from(schema.user).where(eq(schema.user.id, session.userId)).limit(1);
-
-          const userRecord = userRecords[0];
-          if (!userRecord) {
-            console.error('User not found for session:', session.id);
-            return;
-          }
-
-          // Issue token pair and store RT hash in session
-          await issueTokenPair(
-            {
-              id: userRecord.id,
-              email: userRecord.email,
-              name: userRecord.name,
-              emailVerified: userRecord.emailVerified,
-            },
-            session.id,
-          );
-        },
-      },
+      maxAge: 60 * 5, // 5 minutes cache
     },
   },
   emailAndPassword: {
@@ -87,9 +56,9 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: env.AUTH_GOOGLE_CLIENT_ID,
+      clientId: env.NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID,
       clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
-      redirectURI: `${env.API_URL}/api/auth/callback/google`,
+      redirectURI: `${env.NEXT_PUBLIC_API_URL}/api/auth/callback/google`,
     },
   },
   plugins: [
@@ -125,6 +94,7 @@ export const auth = betterAuth({
         }
       },
     }),
+    nextCookies(),
   ],
 });
 

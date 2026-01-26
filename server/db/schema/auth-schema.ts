@@ -33,9 +33,6 @@ export const session = pgTable('session', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
-  // AT+RT: Refresh token fields for JWT-based authentication
-  refreshTokenHash: text('refresh_token_hash'),
-  refreshTokenExpiresAt: timestamp('refresh_token_expires_at'),
 });
 
 export const account = pgTable('account', {

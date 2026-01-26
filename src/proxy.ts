@@ -1,35 +1,58 @@
-// import { auth as middleware } from '@/auth';
+/**
+ * Next.js Middleware Proxy
+ *
+ * Handles:
+ * - Internationalization (next-intl)
+ * - Route protection with Better Auth session
+ */
 
-import { betterFetch } from '@better-fetch/fetch';
 import { NextRequest, NextResponse } from 'next/server';
 import createNextIntlMiddleware from 'next-intl/middleware';
 import { routing } from '@/i18n/routing';
-import { env } from './env';
-import { Session } from './lib/auth-client';
+import { getSession } from '@/lib/auth-session';
 
-async function getAuthSessionCookie(req: NextRequest) {
-  const { data: session } = await betterFetch<Session>(`${env.NEXT_PUBLIC_API_URL}/api/auth/get-session`, {
-    baseURL: req.nextUrl.origin,
-    headers: {
-      cookie: req.headers.get('cookie') || '', // Forward the cookies from the request
-    },
-  });
+// =============================================================================
+// Configuration
+// =============================================================================
 
-  return session;
+/** Routes that require authentication */
+const PROTECTED_ROUTES = ['/protected', '/dashboard', '/settings'];
+
+/** Routes to redirect to after failed auth */
+const LOGIN_ROUTE = '/';
+
+// =============================================================================
+// Helpers
+// =============================================================================
+
+/**
+ * Check if pathname requires authentication
+ */
+function isProtectedRoute(pathname: string): boolean {
+  return PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
 }
 
+// =============================================================================
+// Middleware
+// =============================================================================
+
 async function proxy(req: NextRequest) {
-  const response = createNextIntlMiddleware(routing)(req);
+  const { pathname } = req.nextUrl;
+  const intlResponse = createNextIntlMiddleware(routing)(req);
 
-  if (req.nextUrl.pathname.startsWith('/protected')) {
-    const sessionCookie = await getAuthSessionCookie(req);
-
-    if (!sessionCookie) {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
+  // Skip auth check for non-protected routes
+  if (!isProtectedRoute(pathname)) {
+    return intlResponse;
   }
 
-  return response;
+  // Check authentication via Better Auth session
+  const { user } = await getSession(req);
+
+  if (!user) {
+    return NextResponse.redirect(new URL(LOGIN_ROUTE, req.url));
+  }
+
+  return intlResponse;
 }
 
 export default proxy;

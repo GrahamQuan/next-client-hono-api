@@ -13,10 +13,10 @@ export const env = createEnv({
   clientPrefix: 'NEXT_PUBLIC_',
 
   client: {
-    NEXT_PUBLIC_WEBSITE_URL: z.string().url(),
+    NEXT_PUBLIC_WEBSITE_URL: z.url(),
     NEXT_PUBLIC_WEBSITE_NAME: z.string(),
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string(),
-    NEXT_PUBLIC_API_URL: z.string().url(),
+    NEXT_PUBLIC_API_URL: z.url(),
     NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID: z.string(),
   },
 
