@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   /* config options here */
-  swcMinify: true,
+  // swcMinify: true,
   typedRoutes: true,
   experimental: {
     rootParams: true,

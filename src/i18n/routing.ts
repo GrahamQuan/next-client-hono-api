@@ -2,7 +2,7 @@ import { defineRouting } from 'next-intl/routing';
 
 export const defaultLocale = 'en';
 
-export const languages = [
+export const languages: { locale: 'en' | 'es'; name: string }[] = [
   {
     locale: 'en',
     name: 'English',
