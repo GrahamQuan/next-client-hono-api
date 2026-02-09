@@ -4,7 +4,6 @@ import { ZodError, z } from 'zod';
 
 expand(
   config({
-    // path: process.env.NODE_ENV === 'production' ? '.env' : '.env.development',
     path: '.env',
   }),
 );
@@ -13,7 +12,6 @@ const EnvSchema = z.object({
   // app
   NODE_ENV: z.enum(['development', 'production']),
   PORT: z.coerce.number().default(3000),
-  NEXT_PUBLIC_API_URL: z.string(),
   WEBSITE_URL: z.string(),
   // database
   DATABASE_URL: z.string(),
@@ -22,7 +20,6 @@ const EnvSchema = z.object({
   // auth
   AUTH_TOTP_SECRET: z.string(),
   AUTH_BETTER_AUTH_SECRET: z.string(),
-  NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID: z.string(),
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
   AUTH_TURNSTILE_SECRET_KEY: z.string(),
   // email
@@ -37,6 +34,12 @@ const EnvSchema = z.object({
   BUCKET_ACCESS_KEY_ID: z.string(),
   BUCKET_SECRET_ACCESS_KEY: z.string(),
   BUCKET_PUBLIC_URL: z.string(),
+  // client (NEXT_PUBLIC_*)
+  NEXT_PUBLIC_WEBSITE_URL: z.string().url(),
+  NEXT_PUBLIC_WEBSITE_NAME: z.string(),
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string(),
+  NEXT_PUBLIC_API_URL: z.string().url(),
+  NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID: z.string(),
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;
@@ -47,7 +50,7 @@ try {
   if (error instanceof ZodError) {
     let message = 'Missing required values in .env:\n';
     for (const issue of error.issues) {
-      message = `${String(issue.path[0])}: ${issue.message}\n`;
+      message += `${String(issue.path[0])}: ${issue.message}\n`;
     }
     const e = new Error(message);
     e.stack = '';

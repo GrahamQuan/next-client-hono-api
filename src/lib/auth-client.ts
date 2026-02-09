@@ -1,14 +1,14 @@
 import { emailOTPClient, oneTapClient, usernameClient } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
-import { env } from '@/env';
+import { envClient } from '@/env-client';
 
 export type SocialProviders = 'google';
 
 export const { signIn, signOut, signUp, useSession, oneTap, $Infer, emailOtp, updateUser } = createAuthClient({
-  baseURL: env.NEXT_PUBLIC_API_URL,
+  baseURL: envClient.NEXT_PUBLIC_API_URL,
   plugins: [
     oneTapClient({
-      clientId: env.NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID,
+      clientId: envClient.NEXT_PUBLIC_AUTH_GOOGLE_CLIENT_ID,
       // Optional client configuration:
       autoSelect: false,
       cancelOnTapOutside: true,
