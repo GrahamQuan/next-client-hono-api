@@ -1,10 +1,12 @@
 'use client';
 
+import { Turnstile } from '@marsidev/react-turnstile';
 import { Label } from '@radix-ui/react-label';
 import { useTranslations } from 'next-intl';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import { openSocialPopup } from '@/app/[locale]/(auth)/social-signin/open-social-popup';
+import { envClient } from '@/env-client';
 import { useTurnstile } from '@/hooks/auth/use-turnstile';
 import { signUp } from '@/lib/auth-client';
 import useSignInDialog from '@/store/auth/use-signin-dialog';
@@ -17,14 +19,14 @@ export default function SignupWithEmailForm() {
   const setEmail = useSignInDialog((state) => state.setEmail);
 
   const {
-    containerRef,
+    turnstileRef,
     token: turnstileToken,
     error: turnstileError,
-    isLoaded: isTurnstileLoaded,
     reset: resetTurnstile,
-  } = useTurnstile({
-    action: 'signup',
-  });
+    onSuccess,
+    onError,
+    onExpire,
+  } = useTurnstile();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +57,9 @@ export default function SignupWithEmailForm() {
         },
       },
     });
+
+    // biome-ignore lint/suspicious/noDebugger: <explanation>
+    debugger;
 
     if (error) {
       toast.error('Try again please', {
@@ -101,14 +106,26 @@ export default function SignupWithEmailForm() {
           />
         </div>
         <div>
+          <Label htmlFor='turnstile'>{t('let-us-know-you-are-human')}</Label>
           {turnstileError && (
             <div className='mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700'>{turnstileError}</div>
           )}
-          <div ref={containerRef} />
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={envClient.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+            options={{
+              action: 'signup',
+              theme: 'auto',
+              size: 'flexible',
+            }}
+            onSuccess={onSuccess}
+            onError={onError}
+            onExpire={onExpire}
+          />
         </div>
         <Button
           type='submit'
-          disabled={!turnstileToken && isTurnstileLoaded}
+          disabled={!turnstileToken}
           className='w-full hover:enabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-60'
         >
           {t('sign-in-with-email')}

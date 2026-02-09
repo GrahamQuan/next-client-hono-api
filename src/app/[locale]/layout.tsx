@@ -37,11 +37,6 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[lo
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <script
-          defer
-          id='cf-turnstile-script'
-          src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
-        ></script>
         <script src='https://accounts.google.com/gsi/client' async></script>
       </head>
       <body className='dark'>
