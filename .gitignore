@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# i18n translation temp files
+.agents/skills/sync-locales-from-en/temp/
+.claude/skills/sync-locales-from-en/temp/
