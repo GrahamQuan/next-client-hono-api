@@ -112,7 +112,7 @@ export default function SignupWithEmailForm() {
           )}
           <Turnstile
             ref={turnstileRef}
-            siteKey={envClient.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+            siteKey={envClient.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
             options={{
               action: 'signup',
               theme: 'auto',
